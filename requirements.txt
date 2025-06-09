@@ -1,4 +1,10 @@
-Flask
-Flask-Cors
-google-generativeai
-gunicorn
+flask
+flask-cors
+flask-pymongo
+pillow
+numpy
+tensorflow
+pandas
+requests
+bcrypt
+pyjwt
