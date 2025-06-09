@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+  <div class="login-container">
+    <div class="background">
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+    <form class="login-form" id="loginForm">
+      <h3>Login Here</h3>
+
+      <label for="username">Email</label>
+      <input type="text" id="username" placeholder="Email or Phone" />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Password" />
+
+      <button type="submit">Log In</button>
+
+      <p id="message" style="display:none; color: #ffffff; margin-top: 10px; background-color: #000000; text-align: center; padding: 5px; border-radius: 20px;"></p>
+
+      <div class="social">
+        <a href="/register"><div class="go">SING UP</div></a>
+        <a href="/forgot-password"><div class="fb">FORGOT PASSWORD</div></a>
+      </div>
+    </form>
+  </div>
+
+  <!-- <script>
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const emailOrUsername = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const messageEl = document.getElementById('message');
+
+      try {
+        const response = await fetch('http://localhost:5000/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: emailOrUsername, password: password })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const token = localStorage.setItem('token', data.token);
+          window.location.href = '/home'; // Redirect to homepage
+        } else {
+          messageEl.textContent = 'Login failed!';
+          messageEl.style.display = 'block';
+        }
+      } catch (error) {
+        messageEl.textContent = 'An error occurred. Please try again.';
+        messageEl.style.display = 'block';
+      }
+    });
+  </script> --> 
+
+
+  <script>
+  document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const emailOrUsername = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const messageEl = document.getElementById('message');
+
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailOrUsername, password: password })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          window.location.href = '/home'; // ✅ Ensure the protected page is a real .html file
+        } else {
+          messageEl.textContent = 'Invalid response from server.';
+          messageEl.style.display = 'block';
+        }
+      } else {
+        messageEl.textContent = 'Invalid credentials. Please try again.';
+        messageEl.style.display = 'block';
+      }
+    } catch (error) {
+      messageEl.textContent = 'Server error. Please try again later.';
+      messageEl.style.display = 'block';
+      console.error(error);
+    }
+  });
+</script>
+
+
+
+</body>
+</html>

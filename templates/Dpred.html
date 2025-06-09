@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Diseases Prediction - Crop Recommender{% endblock %}
+{% block content %}
+<div class="header">
+    <h1>🌱 placeholder for Diseases Prediction</h1>
+    <p>Developed by Adnan Rahman and Polash</p>
+</div>
+
+ <div class="container">
+    <h1>Tomato Disease Detection</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" name="file" id="fileInput" accept="image/*" required />
+      <br>
+      <button type="submit">Detect Disease</button>
+    </form>
+
+    <div class="result" id="result" style="display:none;">
+      <h3>Prediction Result:</h3>
+      <p><strong>Disease:</strong> <span id="prediction"></span></p>
+      <p><strong>Confidence:</strong> <span id="confidence"></span></p>
+      <h4>Prevention Measures:</h4>
+      <ul id="measures"></ul>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fileInput = document.getElementById('fileInput');
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+
+      const response = await fetch('/detect', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        document.getElementById('prediction').textContent = result.prediction;
+        document.getElementById('confidence').textContent = (result.confidence * 100).toFixed(2) + '%';
+        
+        const measuresList = document.getElementById('measures');
+        measuresList.innerHTML = '';
+        result.prevention_measures.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          measuresList.appendChild(li);
+        });
+
+        document.getElementById('result').style.display = 'block';
+      } else {
+        alert('Error: ' + (result.error || 'Unknown error'));
+      }
+    });
+  </script>
+
+{% endblock %}

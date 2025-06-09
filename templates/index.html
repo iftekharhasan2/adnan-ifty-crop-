@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Home - Crop Recommender{% endblock %}
+{% block content %}
+<div class="header">
+    <h1>🌱 Welcome to Crop Recommender</h1>
+    <p>Developed by Adnan Rahman</p>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h3>🌾 Recommend Crops for Your Farm</h3>
+        <p>This section is a placeholder for crop recommendation functionality. Stay tuned for updates!</p>
+        <button id="logoutBtn" class="btn btn-primary">Logout</button>
+    </div>
+</div>
+
+
+  <script>
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      const token = localStorage.getItem('token');
+
+      try {
+        const response = await fetch('http://localhost:5000/logout', {
+          method: 'POST',
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          localStorage.removeItem('token');
+          window.location.href = '/'; // Redirect to login page
+        } else {
+          console.error('Logout failed');
+          alert('Logout failed');
+        }
+      } catch (error) {
+        console.error('Error during logout:', error);
+        alert('Error during logout');
+      }
+    });
+  </script>
+
+
+{% endblock %}

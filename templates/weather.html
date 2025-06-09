@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Weather - Crop Recommender{% endblock %}
+{% block content %}
+<div class="header">
+    <h1>🌦️ Current Weather Information</h1>
+</div>
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label for="city" class="form-label">📍 Enter your District Name:</label>
+                <input type="text" class="form-control" name="city" value="Dhaka" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Fetch Weather</button>
+        </form>
+        {% if error %}
+        <div class="alert alert-danger mt-3">{{ error }}</div>
+        {% endif %}
+        {% if weather_data %}
+        <div class="weather-data mt-3">
+            <h3>Weather Information</h3>
+            <p><strong>Temperature:</strong> {{ weather_data.Temperature }}°C</p>
+            <p><strong>Humidity:</strong> {{ weather_data.Humidity }}%</p>
+            <p><strong>Weather Condition:</strong> {{ weather_data.Weather }}</p>
+            <p><strong>Wind Speed:</strong> {{ weather_data['Wind Speed'] }} m/s</p>
+            <div class="alert alert-success">
+                <a href="https://docs.google.com/document/d/1zAfRxq70L-Akjt9T9Hthoe-FQNrsUTei6KtNNkE6EIk/edit?usp=drivesdk" target="_blank" class="alert-link">
+                    Click to Open the Manual
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

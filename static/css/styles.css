@@ -1,0 +1,232 @@
+body {
+    background-color: #f0f4f1; /* Light green-gray for agricultural theme */
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container styling */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+/* Navbar styling */
+.navbar {
+    background-color: #2e7d32; /* Green for agricultural theme */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+    margin-left: 15px;
+}
+
+.nav-link:hover {
+    color: #c8e6c9 !important;
+}
+
+/* Header styling */
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #4caf50;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Card styling */
+.card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.card-header {
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+    padding: 15px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Form elements */
+.form-label {
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 8px;
+}
+
+.form-control, .form-select {
+    border: 2px solid #81c784;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #2e7d32;
+    box-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
+}
+
+.form-check-label {
+    margin-left: 8px;
+    color: #444;
+}
+
+.btn-primary {
+    background-color: #2e7d32;
+    border-color: #2e7d32;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1b5e20;
+    border-color: #1b5e20;
+}
+
+/* Table styling */
+.table {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+    background-color: #81c784;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+}
+
+.table td {
+    padding: 12px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Alert styling */
+.alert {
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.alert-danger {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.alert-info, .alert-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.alert-link {
+    color: #1b5e20;
+    font-weight: bold;
+}
+
+/* Video container */
+.video-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.video-container iframe {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+}
+
+/* Additional instructions */
+.additional-instructions p {
+    background-color: #e8f5e9;
+    padding: 10px;
+    border-left: 4px solid #2e7d32;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+    h1 {
+      color: #333;
+    }
+
+    input[type="file"] {
+      margin-bottom: 1rem;
+    }
+
+    .result {
+      margin-top: 2rem;
+      margin-bottom: 4rem;
+      padding: 1rem;
+      background: #e7f4e4;
+      border-left: 5px solid #4CAF50;
+    }
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .header p {
+        font-size: 1rem;
+    }
+
+    .form-control, .form-select {
+        font-size: 0.9rem;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .table th, .table td {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .nav-link {
+        margin-left: 10px;
+    }
+}

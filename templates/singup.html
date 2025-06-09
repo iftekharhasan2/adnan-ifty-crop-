@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration Form</title>
+  <link rel="stylesheet" href="RegistrationForm.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@zmdi/font@2.2.0/css/material-design-iconic-font.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/singup.css') }}">
+</head>
+<body>
+  <div class="wrapper">
+    <div class="inner">
+      <div class="image-holder">
+        <img src="static/images/WhatsApp Image 2025-06-10 at 02.26.44_9b3af72e.jpg" alt="Registration" />
+        <img src="static/images/WhatsApp Image 2025-06-10 at 02.26.44_9b3af72e.jpg" alt="Registration" />
+      </div>
+      <form id="registrationForm">
+        <h3>Registration Form</h3>
+        <div class="form-group">
+          <input type="text" name="firstName" placeholder="First Name" class="form-control" required />
+          <input type="text" name="lastName" placeholder="Last Name" class="form-control" required />
+        </div>
+        <div class="form-wrapper">
+          <input type="text" name="phone" placeholder="Phone Number" class="form-control" required />
+          <i class="zmdi zmdi-account"></i>
+        </div>
+        <div class="form-wrapper">
+          <input type="email" name="email" placeholder="Email Address" class="form-control" required />
+          <i class="zmdi zmdi-email"></i>
+        </div>
+        <div class="form-wrapper">
+          <select name="gender" class="form-control" required>
+            <option value="" disabled selected>Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+          <i class="zmdi zmdi-caret-down" style="font-size: 17px;"></i>
+        </div>
+        <div class="form-wrapper">
+          <select name="department" class="form-control" required>
+            <option value="" disabled selected>Select Department</option>
+            <option value="cse">CSE</option>
+            <option value="eee">EEE</option>
+            <option value="cs">CS</option>
+          </select>
+          <i class="zmdi zmdi-caret-down" style="font-size: 17px;"></i>
+        </div>
+        <div class="form-wrapper">
+          <input type="password" name="password" placeholder="Password" class="form-control" required />
+          <i class="zmdi zmdi-lock"></i>
+        </div>
+        <div class="form-wrapper">
+          <input type="password" name="confirmPassword" placeholder="Confirm Password" class="form-control" required />
+          <i class="zmdi zmdi-lock"></i>
+        </div>
+        <button type="submit">
+          Register
+          <i class="zmdi zmdi-arrow-right"></i>
+        </button>
+        <p id="message" style="display:none; color: red; margin-top: 10px; position: absolute; top: 80px; left: 55rem; font-size: large; background-color: #000000; padding: 5px 20px; border-radius: 19px;"></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      const messageEl = document.getElementById('message');
+
+      if (data.password !== data.confirmPassword) {
+        messageEl.textContent = 'Passwords do not match';
+        messageEl.style.display = 'block';
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:5000/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+            phone: data.phone,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            gender: data.gender,
+            department: data.department
+          })
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          messageEl.textContent = result.message || 'Signup successful!';
+        } else if (res.status === 409) {
+          messageEl.textContent = 'User already exists!';
+        } else {
+          messageEl.textContent = 'Signup failed';
+        }
+      } catch (err) {
+        messageEl.textContent = 'Network error. Try again later.';
+      }
+
+      messageEl.style.display = 'block';
+    });
+  </script>
+</body>
+</html>

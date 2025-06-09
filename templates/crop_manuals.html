@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Crop Manuals - Crop Recommender{% endblock %}
+{% block content %}
+<div class="header">
+    <h1>🌾 ফসল পরিকল্পনা সহায়ক</h1>
+    <p>Developed by Adnan Rahman</p>
+</div>
+{% if redirect_to_manual %}
+<div class="alert alert-info">
+    <a href="https://docs.google.com/document/d/1Kl2pIYCwxvkz_79dfApkrB7yNdNawtPO/edit?usp=sharing&ouid=103687624693269329103&rtpof=true&sd=true" target="_blank" class="alert-link">
+        Proceed to Cucumber Manual - Google Docs
+    </a>
+</div>
+{% else %}
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Do you want dynamic mangement for ur crop?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="dynamic_choice" value="Yes" {% if dynamic_choice == "Yes" %}checked{% endif %}>
+                    <label class="form-check-label">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="dynamic_choice" value="No" {% if dynamic_choice == "No" %}checked{% endif %}>
+                    <label class="form-check-label">No</label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="start_date" class="form-label">📅 When do you want to start?</label>
+                <input type="date" class="form-control" name="start_date" value="{{ start_date }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="city" class="form-label">📍 What is your area?</label>
+                <input type="text" class="form-control" name="city" value="{{ city }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="phase" class="form-label">📘 Phase</label>
+                <select class="form-select" name="phase">
+                    <option value="জমি প্রস্তুতকালীন সময়কাল" {% if phase == "জমি প্রস্তুতকালীন সময়কাল" %}selected{% endif %}>জমি প্রস্তুতকালীন সময়কাল</option>
+                    <option value="সংবেদনশীল সময়কাল" {% if phase == "সংবেদনশীল সময়কাল" %}selected{% endif %}>সংবেদনশীল সময়কাল</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="day" class="form-label">📅 Day</label>
+                <input type="number" class="form-control" name="day" value="{{ day }}" min="1" max="30" required>
+            </div>
+            <div class="mb-3" {% if phase != "সংবেদনশীল সময়কাল" %}style="display:none;"{% endif %}>
+                <label class="form-label">❓ চারা গজিয়েছে?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="chara" value="Yes" {% if chara == "Yes" %}checked{% endif %}>
+                    <label class="form-check-label">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="chara" value="No" {% if chara == "No" %}checked{% endif %}>
+                    <label class="form-check-label">No</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+{% if error %}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+{% if df_data %}
+<div class="card">
+    <div class="card-header">
+        <h3>✅ শসা চাষের প্রস্তুতি সময়সূচি</h3>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ধাপ (Step)</th>
+                    <th>কাজের বিবরণ (Task Description)</th>
+                    <th>সময়কাল (Time of Day)</th>
+                    <th>সময় সীমা (Time Range)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in df_data %}
+                <tr>
+                    <td>{{ row.Step }}</td>
+                    <td>{{ row['Task Description'] }}</td>
+                    <td>{{ row['Time of Day'] }}</td>
+                    <td>{{ row['Time Range'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% if tuple_items %}
+<div class="card">
+    <div class="card-header">
+        <h3>📌 অতিরিক্ত নির্দেশনা</h3>
+    </div>
+    <div class="card-body additional-instructions">
+        {% for tup in tuple_items %}
+            {% for statement in tup %}
+            <p>🔸 {{ statement }}</p>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+<div class="card">
+    <div class="card-header">
+        <h3>🌦️ আবহাওয়া তথ্য</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>তাপমাত্রা:</strong> {{ temp }}°C</p>
+        <p><strong>আর্দ্রতা:</strong> {{ humidity }}%</p>
+        <p><strong>আবহাওয়া:</strong> {{ weather_desc }}</p>
+        <p><strong>বাতাসের গতি:</strong> {{ wind_speed }} m/s</p>
+    </div>
+</div>
+<div class="video-container">
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/Vf_shMr3pbw" frameborder="0" allowfullscreen></iframe>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}
