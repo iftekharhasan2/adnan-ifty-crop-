@@ -189,6 +189,74 @@ def day_seed30():
 # ------------------------ Weather-based dynamic manual ------------------------
 
 
+@app.route("/crop_manuals", methods=["GET", "POST"])
+def crop_manuals():
+    error = None
+    result = None
+    temp = None
+    humidity = None
+    weather_desc = None
+    wind_speed = None
+    df_data = None
+    tuple_items = []
+    start_date = date.today().strftime("%Y-%m-%d")
+    city = "Dhaka"
+    phase = "জমি প্রস্তুতকালীন সময়কাল"
+    day = 1
+    chara = "No"
+    dynamic_choice = "Yes"
+
+    if request.method == "POST":
+        dynamic_choice = request.form.get("dynamic_choice", "Yes")
+        if dynamic_choice == "No":
+            return render_template("crop_manuals.html", redirect_to_manual=True)
+
+        start_date = request.form.get("start_date", date.today().strftime("%Y-%m-%d"))
+        city = request.form.get("city", "Dhaka")
+        phase = request.form.get("phase", "জমি প্রস্তুতকালীন সময়কাল")
+        day = int(request.form.get("day", 1))
+        chara = request.form.get("chara", "No")
+
+        if phase == "সংবেদনশীল সময়কাল" and chara == "No":
+            error = "চারা গজানোর জন্য অপেক্ষা করুন।"
+        else:
+            result, temp, humidity, weather_desc, wind_speed = center(day, "cucumber", city, phase)
+            if isinstance(result, str):
+                error = result
+            else:
+                step_items = [item for item in result if isinstance(item, str)]
+                tuple_items = [item for item in result if isinstance(item, tuple)]
+                steps = len(step_items) // 3
+                step_numbers = [str(i + 1) for i in range(steps)]
+                descriptions = [step_items[i * 3] for i in range(steps)]
+                times_of_day = [step_items[i * 3 + 1] for i in range(steps)]
+                time_ranges = [step_items[i * 3 + 2] for i in range(steps)]
+                df_data = [
+                    {"Step": num, "Task Description": desc, "Time of Day": tod, "Time Range": tr}
+                    for num, desc, tod, tr in zip(step_numbers, descriptions, times_of_day, time_ranges)
+                ]
+
+    return render_template(
+        "crop_manuals.html",
+        error=error,
+        df_data=df_data,
+        tuple_items=tuple_items,
+        temp=temp,
+        humidity=humidity,
+        weather_desc=weather_desc,
+        wind_speed=wind_speed,
+        start_date=start_date,
+        city=city,
+        phase=phase,
+        day=day,
+        chara=chara,
+        dynamic_choice=dynamic_choice,
+        redirect_to_manual=False
+    )
+
+
+
+
 def weather_report(city):
     api_key = "1bd0be556664fb2dcaa474e56927746d"
     base_url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
@@ -510,70 +578,6 @@ def weather():
 
 
 
-@app.route("/crop_manuals", methods=["GET", "POST"])
-def crop_manuals():
-    error = None
-    result = None
-    temp = None
-    humidity = None
-    weather_desc = None
-    wind_speed = None
-    df_data = None
-    tuple_items = []
-    start_date = date.today().strftime("%Y-%m-%d")
-    city = "Dhaka"
-    phase = "জমি প্রস্তুতকালীন সময়কাল"
-    day = 1
-    chara = "No"
-    dynamic_choice = "Yes"
-
-    if request.method == "POST":
-        dynamic_choice = request.form.get("dynamic_choice", "Yes")
-        if dynamic_choice == "No":
-            return render_template("crop_manuals.html", redirect_to_manual=True)
-
-        start_date = request.form.get("start_date", date.today().strftime("%Y-%m-%d"))
-        city = request.form.get("city", "Dhaka")
-        phase = request.form.get("phase", "জমি প্রস্তুতকালীন সময়কাল")
-        day = int(request.form.get("day", 1))
-        chara = request.form.get("chara", "No")
-
-        if phase == "সংবেদনশীল সময়কাল" and chara == "No":
-            error = "চারা গজানোর জন্য অপেক্ষা করুন।"
-        else:
-            result, temp, humidity, weather_desc, wind_speed = center(day, "cucumber", city, phase)
-            if isinstance(result, str):
-                error = result
-            else:
-                step_items = [item for item in result if isinstance(item, str)]
-                tuple_items = [item for item in result if isinstance(item, tuple)]
-                steps = len(step_items) // 3
-                step_numbers = [str(i + 1) for i in range(steps)]
-                descriptions = [step_items[i * 3] for i in range(steps)]
-                times_of_day = [step_items[i * 3 + 1] for i in range(steps)]
-                time_ranges = [step_items[i * 3 + 2] for i in range(steps)]
-                df_data = [
-                    {"Step": num, "Task Description": desc, "Time of Day": tod, "Time Range": tr}
-                    for num, desc, tod, tr in zip(step_numbers, descriptions, times_of_day, time_ranges)
-                ]
-
-    return render_template(
-        "crop_manuals.html",
-        error=error,
-        df_data=df_data,
-        tuple_items=tuple_items,
-        temp=temp,
-        humidity=humidity,
-        weather_desc=weather_desc,
-        wind_speed=wind_speed,
-        start_date=start_date,
-        city=city,
-        phase=phase,
-        day=day,
-        chara=chara,
-        dynamic_choice=dynamic_choice,
-        redirect_to_manual=False
-    )
 
 
 
