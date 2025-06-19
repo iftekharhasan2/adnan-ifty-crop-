@@ -268,14 +268,9 @@ def crop_manuals():
                     final_list.clear()
 
                     
+                              
+
                     
-                  
-
-
-                     
-
-
-
     return render_template(
         "crop_manuals.html",
         error=error,
