@@ -226,7 +226,7 @@ def crop_manuals():
         else:
             result, temp, humidity, weather_desc, wind_speed = center(day, "cucumber", city, phase)
             
-            if day == 3:
+            if day == 2:
                 weather_desc = "Rain"
             
             if weather_desc == "Rain" or weather_desc == "Haze":
